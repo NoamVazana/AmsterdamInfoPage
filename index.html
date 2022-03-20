@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link href="MyStyle.css" rel="stylesheet" />
+    <script src="amsterdam.js"></script>
+
+    <script>
+
+        console.log(amsterdam);
+
+
+    </script>
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row" id="row1">
+            <div class="col">
+                <h1 class="header1">Welcome To Amsterdam</h1>
+                <h2 class="header2">Informative Page</h2>
+            </div>
+        </div>
+        <div class="row" id="row2">
+            <div class="col" id="phClimate">
+
+            </div>
+        </div>
+
+
+        <div class="row" id="row4">
+            <div class="col" id="phFestival">
+
+
+            </div>
+        </div>
+        <div class="row" id="row5">
+            <div class="col" id="phHistory">
+
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        weatherStr = "<h1>" + amsterdam.results[0].content.sections[4].title + "</h1>";
+        weatherStr += "<h4>" + amsterdam.results[0].content.sections[4].body + "</h4>";
+        weatherStr +="<div class='row' id='row3'>"
+        weatherStr += "<div class='col-2'></div><div class='col' id='maxTemp'><h3>max temperature by month: </h3>" + "<ul>";
+
+        maxTemp = Math.max(...amsterdam.results[0].climate.temperature.average_max.months);
+        minTemp = Math.min(...amsterdam.results[0].climate.temperature.average_max.months);
+
+        monthNames = ["Jenuary", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+        for (var i = 0; i < amsterdam.results[0].climate.temperature.average_max.months.length; i++) {
+            if (amsterdam.results[0].climate.temperature.average_max.months[i] == maxTemp || amsterdam.results[0].climate.temperature.average_max.months[i] == minTemp) {
+                weatherStr += "<li><b>" + monthNames[i] + ": " + amsterdam.results[0].climate.temperature.average_max.months[i] + "°C</b></li>";
+            }
+            else {
+                weatherStr += "<li>" + monthNames[i] + ": " + amsterdam.results[0].climate.temperature.average_max.months[i] + "°C</li>";
+            }
+        }
+
+        weatherStr += "</ul></div>" + "<div class='col' id='minTemp'><h3>min temperature by month: </h3>" + "<ul>"
+        maxTemp = Math.max(...amsterdam.results[0].climate.temperature.average_min.months);
+        minTemp = Math.min(...amsterdam.results[0].climate.temperature.average_min.months);
+
+        for (var i = 0; i < amsterdam.results[0].climate.temperature.average_min.months.length; i++) {
+            if (amsterdam.results[0].climate.temperature.average_min.months[i] == maxTemp || amsterdam.results[0].climate.temperature.average_min.months[i] == minTemp) {
+                weatherStr += "<li><b>" + monthNames[i] + ": " + amsterdam.results[0].climate.temperature.average_min.months[i] + "°C</b></li>";
+            }
+            else {
+                weatherStr += "<li>" + monthNames[i] + ": " + amsterdam.results[0].climate.temperature.average_min.months[i] + "°C</li>";
+            }
+        }
+        weatherStr += "</ul></div><div class='col-2'></div></div>"
+
+        festivalStr = "<h1>Festivals</h1>";
+        festivalStr += "<table id='table'>" + "<tr><th>'Festival'</th>" + "<th>'Description'</th></tr>"
+        for (var i = 0; i < amsterdam.results[0].structured_content.sections[3].sections[1].topics.length; i++) {
+            festivalStr += "<tr><td>" + amsterdam.results[0].structured_content.sections[3].sections[1].topics[i].title + "</td><td>" + amsterdam.results[0].structured_content.sections[3].sections[1].topics[i].body + "</td></tr>";
+
+        }
+        festivalStr += "</table>"
+
+        historyStr = "<h1>" + amsterdam.results[0].content.sections[3].title + "</h1>";
+        historyStr += "<p>" + amsterdam.results[0].content.sections[3].body + "</p>";
+
+
+        document.getElementById("phClimate").innerHTML = weatherStr;
+        document.getElementById("phFestival").innerHTML += festivalStr;
+        document.getElementById("phHistory").innerHTML += historyStr;
+
+    </script>
+
+</body>
+</html>
